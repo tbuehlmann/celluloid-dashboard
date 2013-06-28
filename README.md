@@ -10,7 +10,7 @@ gem 'celluloid-web', github: 'tbuehlmann/celluloid-web'
 And then execute:
 ```sh
 $ bundle install
-```sh
+```
 
 ## Usage
 ```ruby
@@ -18,6 +18,7 @@ require 'celluloid/dashboard'
 
 Celluloid::Dashboard.start
 sleep
+```
 
 ## Contributing
 1. Fork it
