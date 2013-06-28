@@ -1,0 +1,26 @@
+doctype 5
+html lang='en'
+  head
+    meta name='viewport' content='width=device-width, initial-scale=1.0'
+    link href='/css/bootstrap.min.css' rel='stylesheet' media='screen'
+    link href='/css/styles.css' rel='stylesheet' media='screen'
+  body
+    .container
+      .navbar
+        .navbar-inner
+          span.brand href='#' Celluloid::Dashboard
+          ul.nav
+            li class=active_helper(nil)
+              a href='/' Actors
+            / li class=active_helper(['notifications'])
+            /   a href='/notifications' Notifications
+      - flash.each do |key, msg|
+        .alert class="alert-#{key}"
+          == msg
+          a.close href='#' data-dismiss='alert' &times;
+      .row
+        .span12
+          == yield
+    script src='/js/jquery-2.0.2.min.js'
+    script src='/js/bootstrap.min.js'
+    == yield_content :javascripts

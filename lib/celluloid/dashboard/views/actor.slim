@@ -1,0 +1,43 @@
+h2= actor_name(@actor)
+
+| TODO: terminate button/link
+
+h3 Tasks
+table.table.table-bordered.table-condensed
+  thead
+    tr
+      th Type
+      th Status
+      th Exclusive
+  tbody
+    - @actor.tasks.each do |task|
+      tr
+        td= task.type
+        td= task.status
+        td= task.instance_variable_get(:@exclusive) || 'false'
+
+h3 Links
+table.table.table-bordered.table-condensed
+  thead
+    tr
+      th Name
+      th Class
+      th Tasks
+      th Inbox
+      th Links
+      th
+      th
+  tbody
+    - @actors.each do |hash|
+      tr data-actor=hash[:actor].mailbox.address
+        td
+          a href="/actors/#{hash[:actor].mailbox.address}" #{actor_name(hash[:actor])}
+        td= hash[:actor].class
+        td= hash[:actor].tasks.size
+        td= hash[:actor].mailbox.size
+        td= hash[:actor].links.instance_variable_get(:@links).size
+        - if hash[:linked]
+          td== unlink_actor_button(@actor.mailbox.address, hash[:actor].mailbox.address)
+        - else
+          td== link_actor_button(@actor.mailbox.address, hash[:actor].mailbox.address)
+        td== terminate_actor_button(hash[:actor].mailbox.address)

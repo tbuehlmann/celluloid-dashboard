@@ -1,0 +1,35 @@
+h1 Notifications
+h2 Send
+form.form-inline action='/notifications/create' method='POST'
+  input.input-small type='text' placeholder='Topic' name='topic'
+  input.input-small type='text' placeholder='Message' name='message'
+  button.btn.btn-primary.btn-small type='submit' Send
+h2 Received
+table.table.table-bordered.table-condensed#notifications
+  thead
+    tr
+      th Time
+      th Topic
+      th Arguments
+  tbody
+    - Celluloid::Dashboard::Notifier.instance.notifications.reverse.each do |n|
+      tr
+        td
+          time datetime=n[:time].iso8601 #{n[:time].strftime('%F %T')}
+        td= n[:topic]
+        td= n[:args]
+- content_for :javascripts do
+  javascript:
+    event_source = new EventSource('/notifications/stream')
+
+    event_source.addEventListener('notification', function(event) {
+      console.log(event)
+    }, false)
+
+    event_source.addEventListener('notification', function(event) {
+      data = JSON.parse(event.data)
+      tds = "<td><time datetime='" + data.datetime + "'>" + data.time + "</time></td><td>" + data.topic + "</td><td>" + data.args + "</td>"
+      tds = "<tr class='hidden'>" + tds + "</tr>"
+      $('#notifications tr:first').after("<tr>" + tds + "</tr>")
+      $('#notifications tr').fadeIn()
+    }, false)

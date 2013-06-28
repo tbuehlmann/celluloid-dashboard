@@ -1,0 +1,19 @@
+table.table.table-bordered.table-condensed
+  thead
+    tr
+      th Name
+      th Class
+      th Tasks
+      th Inbox
+      th Links
+      th
+  tbody
+    - _actors.each do |actor|
+      tr data-actor=actor.mailbox.address
+        td
+          a href="/actors/#{actor.mailbox.address}" #{actor_name(actor)}
+        td= actor.class
+        td= actor.tasks.size
+        td= actor.mailbox.size
+        td= actor.links.instance_variable_get(:@links).size
+        td== terminate_actor_button(actor.mailbox.address)
